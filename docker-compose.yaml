@@ -20,6 +20,15 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+  auth:
+    build: ./auth
+    volumes:
+      - ./auth:/app
+    ports:
+    - "8081:80"
+    # entrypoint: ["sh", "-c", "sleep 2073600"]
+    entrypoint: ["sh", "-c", "/start-reload.sh"]
+    # entrypoint: ["sh", "-c", "/start.sh"]
 volumes:
   db_data:
 
