@@ -18,7 +18,18 @@ async def read_item(item_id: int, q: str = None):
 
 @app.get("/users")
 async def read_users():
-    r = await client.get("http://0.0.0.0:80/")
+    query = '''
+    query {
+        user {
+            id
+            name
+            email
+        }
+    }
+    '''
+    body = {
+        "query": query
+    }
+    r = await client.post("http://graphql-engine:8080/v1/graphql/", json=body)
     data  = r.json()
-    logger.info(data.get("Hello"))
-    return {"message": "ok"}
+    return data
