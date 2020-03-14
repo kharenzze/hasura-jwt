@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 import logging
+import httpx
 
 logger = logging.getLogger("main")
 
 app = FastAPI()
+client = httpx.AsyncClient()
 
 @app.get("/")
 async def read_root():
@@ -13,3 +15,10 @@ async def read_root():
 @app.get("/items/{item_id}")
 async def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
+
+@app.get("/users")
+async def read_users():
+    r = await client.get("http://0.0.0.0:80/")
+    data  = r.json()
+    logger.info(data.get("Hello"))
+    return {"message": "ok"}
