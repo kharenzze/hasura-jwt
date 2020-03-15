@@ -31,6 +31,8 @@ services:
     # entrypoint: ["sh", "-c", "sleep 2073600"]
     entrypoint: ["sh", "-c", "/start-reload.sh"]
     # entrypoint: ["sh", "-c", "/start.sh"]
+    environment:
+      - JWT_KEY=${JWT_KEY}
   proxy:
     container_name: proxy
     image: nginx
