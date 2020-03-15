@@ -8,6 +8,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
+    container_name: engine
     image: hasura/graphql-engine:v1.1.0
     expose:
       - "8080"
@@ -21,6 +22,7 @@ services:
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
   auth:
+    container_name: auth
     build: ./auth
     volumes:
       - ./auth:/app
@@ -30,6 +32,7 @@ services:
     entrypoint: ["sh", "-c", "/start-reload.sh"]
     # entrypoint: ["sh", "-c", "/start.sh"]
   proxy:
+    container_name: proxy
     image: nginx
     volumes:
     - ./nginx/sites-enabled:/etc/nginx/sites-enabled
