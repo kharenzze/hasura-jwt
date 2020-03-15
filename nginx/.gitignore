@@ -1,0 +1,16 @@
+conf.d/default.conf
+fastcgi_params
+fastcgi.conf
+koi-utf
+koi-win
+mime.types
+modules
+nginx.conf
+scgi_params
+sites-enabled/*
+!sites-enabled/empty
+ssl/*
+!ssl/empty
+uwsgi_params
+win-utf
+*.default
