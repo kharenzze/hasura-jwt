@@ -9,8 +9,8 @@ services:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
     image: hasura/graphql-engine:v1.1.0
-    ports:
-    - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
     - "postgres"
     restart: always
@@ -24,11 +24,26 @@ services:
     build: ./auth
     volumes:
       - ./auth:/app
-    ports:
-    - "8081:80"
+    expose:
+      - "8081"
     # entrypoint: ["sh", "-c", "sleep 2073600"]
     entrypoint: ["sh", "-c", "/start-reload.sh"]
     # entrypoint: ["sh", "-c", "/start.sh"]
+  proxy:
+    image: nginx
+    volumes:
+    - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+    - ./nginx/conf.d:/etc/nginx/conf.d
+    - ./nginx/templates:/etc/nginx/templates
+    ports:
+    - "80:80"
+    environment:
+    - NGINX_HOST=localhost
+    - NGINX_PORT=80
+    depends_on:
+      - auth
+      - graphql-engine
+    command: /bin/bash -c "envsubst < /etc/nginx/sites-enabled/server.template > /etc/nginx/sites-enabled/server.conf && exec nginx -g 'daemon off;'"
 volumes:
   db_data:
 

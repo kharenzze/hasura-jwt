@@ -7,7 +7,7 @@ mime.types
 modules
 nginx.conf
 scgi_params
-sites-enabled/*
+sites-enabled/*.conf
 !sites-enabled/empty
 ssl/*
 !ssl/empty
