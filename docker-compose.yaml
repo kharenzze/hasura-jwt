@@ -32,6 +32,7 @@ services:
       - "8081"
     # entrypoint: ["sh", "-c", "sleep 2073600"]
     entrypoint: ["sh", "-c", "/start-reload.sh"]
+    # command: ["python", "/app/main.py"]
     # entrypoint: ["sh", "-c", "/start.sh"]
     environment:
       JWT_KEY: ${JWT_KEY}
