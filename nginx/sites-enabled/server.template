@@ -28,6 +28,10 @@ server
         proxy_pass http://auth:80/;
     }
 
+    location /login/ {
+        proxy_pass http://login:3000/login/;
+    }
+
     location /engine/ {
         proxy_pass http://graphql-engine:8080;
     }

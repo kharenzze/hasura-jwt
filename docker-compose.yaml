@@ -20,9 +20,8 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # False to use CLI and handle migrations
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "${JWT_KEY}"}'
-      HASURA_GRAPHQL_ADMIN_SECRET: bestsecret
       ## uncomment next line to set an admin secret
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_ADMIN_SECRET: bestsecret
   auth:
     container_name: auth
     build: ./auth
@@ -36,6 +35,14 @@ services:
     # entrypoint: ["sh", "-c", "/start.sh"]
     environment:
       JWT_KEY: ${JWT_KEY}
+  login:
+    container_name: login
+    image: node:current
+    volumes: 
+    - ./login:/login
+    expose:
+    - "3000"
+    entrypoint: ["sh", "/login/start.sh"]
   proxy:
     container_name: proxy
     image: nginx
@@ -50,6 +57,7 @@ services:
     - NGINX_PORT=80
     depends_on:
       - auth
+      - login
       - graphql-engine
     command: /bin/bash -c "envsubst < /etc/nginx/sites-enabled/server.template > /etc/nginx/sites-enabled/server.conf && exec nginx -g 'daemon off;'"
 volumes:
